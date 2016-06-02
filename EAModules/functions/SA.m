@@ -1,4 +1,4 @@
-%% FUNCTION Least_Lasso
+%% FUNCTION SA
 %   simulated annealing for active modules identification in molecular interaction networks
 %
 %% INPUT
