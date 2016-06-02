@@ -36,8 +36,8 @@
 %  [2] Memetic algorithm for finding active connected subnetworks in intracellular networks. Dong Li et al, 2016
 
 clear all
-addpath('../EAActive/utils/')
-addpath('../EAActive/functions/')
+addpath('../EAModules/utils/')
+addpath('../EAModules/functions/')
 addpath('../data/')
 load('galFiltered.mat')
 T_start = 1;
