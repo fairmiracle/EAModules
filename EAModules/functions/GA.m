@@ -69,13 +69,14 @@ for T = 1:iteration
     [B,I] = sort(allscore,'descend');
     bestindiv = Pop{I(1)};
     B = B/scoresum;
-    %accumulated score
+   
+    % accumulated score
     accumscore = zeros(popsize,1);
     accumscore(1) = B(1);
     for i = 2:popsize
         accumscore(i) = B(i)+accumscore(i-1);
     end
-
+    
     Popnew = cell(popsize,1);
     for i = 1:popsize
         idx = locatep(accumscore,rand());
@@ -103,12 +104,12 @@ for T = 1:iteration
         p1 = ceil(popsize*rand());
         nodes1 = Popnew{p1}.nodes;
         mutatepoint =  ceil(N*rand());
-            if nodes1(mutatepoint) == 1
-                nodes1(mutatepoint) = 0;
-            else
-                nodes1(mutatepoint) = 1;
-            end
-         Popnew{p1}.nodes =  nodes1;   
+        if nodes1(mutatepoint) == 1
+            nodes1(mutatepoint) = 0;
+        else
+            nodes1(mutatepoint) = 1;
+        end
+        Popnew{p1}.nodes =  nodes1;
     end
     
     Pop = Popnew;
