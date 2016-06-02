@@ -1,5 +1,5 @@
 %% Examples
-%   simulated annealing for active modules identification in molecular interaction networks
+%   genetic algorithm for active modules identification in molecular interaction networks
 %
 %% INPUT
 %   G: n*n adjacency matrix of the network
@@ -40,7 +40,8 @@ addpath('../EAModules/utils/')
 addpath('../EAModules/functions/')
 addpath('../data/')
 load('galFiltered.mat')
-T_start = 1;
-T_end = 0.001;
-iteration = 10000;
-[corrected_subnet_score, fsubset] = SA(G, array_basic_z, randomscore,T_start,T_end,iteration);
+popsize = 100;
+crossrate = 0.9;
+mutrate = 0.5;
+iteration = 100;
+[corrected_subnet_score, fsubset] = GA(G, array_basic_z, randomscore,popsize,crossrate,mutrate,iteration);
