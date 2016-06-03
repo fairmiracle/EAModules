@@ -43,6 +43,6 @@ load('galFiltered.mat')
 popsize = 100;
 crossrate = 0.9;
 lsrate = 0.5;
-iteration = 1000;
+iteration = 100;
 lsiter = 5;
-[corrected_subnet_score, fsubset,func] = MA(G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration)
+[corrected_subnet_score, fsubset,func] = MA(G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration);
