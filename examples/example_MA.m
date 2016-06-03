@@ -42,6 +42,7 @@ addpath('../data/')
 load('galFiltered.mat')
 popsize = 100;
 crossrate = 0.9;
-mutrate = 0.5;
+lsrate = 0.5;
 iteration = 1000;
-[corrected_subnet_score, fsubset] = GA(G, array_basic_z, randomscore,popsize,crossrate,mutrate,iteration);
+lsiter = 5;
+[corrected_subnet_score, fsubset] = MA(G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration)
