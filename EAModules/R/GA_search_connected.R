@@ -15,7 +15,7 @@
 #' 
 #' @return a list containing module size, best score, module as a list of nodes 
 #' and a list of GA functions.
-#'  membership
+#' 
 #' @references Ma, Haisu, et al. "COSINE: COndition-SpecIfic sub-NEtwork 
 #' identification using a global optimization method." 
 #' Bioinformatics 27.9 (2011): 1290-1298.
