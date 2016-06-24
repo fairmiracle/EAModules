@@ -39,7 +39,7 @@ clear all
 addpath('../EAModules/utils/')
 addpath('../EAModules/functions/')
 addpath('../data/')
-load('galFiltered.mat')
+load('galdata.mat')
 T_start = 1;
 T_end = 0.001;
 iteration = 10000;

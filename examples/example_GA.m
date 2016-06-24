@@ -39,7 +39,7 @@ clear all
 addpath('../EAModules/utils/')
 addpath('../EAModules/functions/')
 addpath('../data/')
-load('galFiltered.mat')
+load('galdata.mat')
 popsize = 100;
 crossrate = 0.9;
 mutrate = 0.5;
