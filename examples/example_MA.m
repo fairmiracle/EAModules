@@ -43,6 +43,6 @@ load('galdata.mat')
 popsize = 100;
 crossrate = 0.9;
 lsrate = 0.5;
-iteration = 1000;
-lsiter = 5;
-[corrected_subnet_score, fsubset,func] = MA(G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration);
+iteration = 10000;
+lsiter = 10;
+[corrected_subnet_score_MA, fsubset_MA,func_MA] = MA(G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration);

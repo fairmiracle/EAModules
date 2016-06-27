@@ -14,14 +14,21 @@ GA_result2 <- GA_search_connected(lambda=0.5,scaled_node_score,scaled_edge_score
 num_iter=100, muCh=0.05, zToR=10, minsize=50)
 
 ## visualized by igraph
-selected = c()
-for (i in 1:dim(PPI)[1]){
-    if (PPI[i,1] %in% GA_result2$Subnet || PPI[i,2] %in% GA_result2$Subnet)
-        selected = c(selected,i)
+visualizedModule <- function(GA_result2,PPI,savefilename){
+    selected = c()
+    for (i in 1:dim(PPI)[1]){
+        if (PPI[i,1] %in% GA_result2$Subnet || PPI[i,2] %in% GA_result2$Subnet)
+            selected = c(selected,i)
+    }
+    library(igraph)
+    g <- graph.data.frame(PPI[selected,], directed=FALSE)
+    V(g)$color <- "blue"
+    V(g)$color[match(GA_result2$Subnet,V(g)$name)] <- "red"
+    layout <- layout.reingold.tilford(g, circular=T)
+    png(file = savefilename,width = 4096, height = 3652)
+    plot(g,layout=layout, vertex.size=5, vertex.label.cex=5,vertex.label.dist=0.5,edge.width=5)
+    dev.off()
+    plot(g,layout=layout, vertex.size=5, vertex.label.dist=0.5)
 }
-library(igraph)
-g <- graph.data.frame(PPI[selected,], directed=FALSE)
-V(g)$color <- "blue"
-V(g)$color[match(GA_result2$Subnet,V(g)$name)] <- "red"
-layout <- layout.reingold.tilford(g, circular=T)
-plot(g,layout=layout, vertex.size=5, vertex.label.cex=5,vertex.label.dist=0.5,edge.width=5)
+
+visualizedModule(GA_result2,PPI,'ppi.png')

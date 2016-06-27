@@ -43,5 +43,5 @@ load('galdata.mat')
 popsize = 100;
 crossrate = 0.9;
 mutrate = 0.5;
-iteration = 1000;
+iteration = 10000;
 [corrected_subnet_score, fsubset,func] = GA(G, array_basic_z, randomscore,popsize,crossrate,mutrate,iteration);
