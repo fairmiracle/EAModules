@@ -83,7 +83,7 @@ for T = 1:iteration
         Popnew{i} = Pop{idx};
     end
     
-    % cross
+    %cross
     for i = 1:ceil(popsize*crossrate)
         p1 = ceil(popsize*rand());
         p2 = ceil(popsize*rand());
@@ -101,27 +101,28 @@ for T = 1:iteration
     
     % local search
     for i = 1:ceil(popsize*lsrate)
-        p1 = ceil(popsize*rand());
-        
+        %p1 = ceil(popsize*rand());
+        p1 =1;
         bestnodes1 = Popnew{p1}.nodes;
-        nodeSet = find(nodes1==1);
+        nodeSet = find(bestnodes1==1);
         [bstscore,bstset] = topscore(G,array_basic_z,randomscore,nodeSet);
+        
         for k = 1:lsiter
             nodes1 = Popnew{p1}.nodes;
-            %for k = 1:20
+            
             mutatepoint =  ceil(N*rand());
             if nodes1(mutatepoint) == 1
                 nodes1(mutatepoint) = 0;
             else
                 nodes1(mutatepoint) = 1;
             end
+            
             nodeSet = find(nodes1==1);
             [topkscore,topkset] = topscore(G,array_basic_z,randomscore,nodeSet);
             if bstscore < topkscore
                 bstscore = topkscore;
                 bestnodes1 = nodes1;
             end
-            %end
         end
         
         Popnew{p1}.nodes = bestnodes1;
