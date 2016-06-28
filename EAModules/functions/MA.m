@@ -101,8 +101,9 @@ for T = 1:iteration
     
     % local search
     for i = 1:ceil(popsize*lsrate)
-        p1 = ceil(popsize*rand());
+        %p1 = ceil(popsize*rand());
         nodes1 = Popnew{p1}.nodes;
+        %nodes1 = bestindiv.nodes;
         
         bestnodes1 = nodes1;
         nodeSet = find(bestnodes1==1);
