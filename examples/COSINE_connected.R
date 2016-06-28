@@ -25,6 +25,7 @@ visualizedModule <- function(GA_result2,PPI,savefilename){
     V(g)$color <- "blue"
     V(g)$color[match(GA_result2$Subnet,V(g)$name)] <- "red"
     layout <- layout.reingold.tilford(g, circular=T)
+    #layout <- layout.fruchterman.reingold(g)
     png(file = savefilename,width = 4096, height = 3652)
     plot(g,layout=layout, vertex.size=5, vertex.label.cex=5,vertex.label.dist=0.5,edge.width=5)
     dev.off()
@@ -32,3 +33,9 @@ visualizedModule <- function(GA_result2,PPI,savefilename){
 }
 
 visualizedModule(GA_result2,PPI,'ppi.png')
+
+## venn digram
+grid.newpage()
+draw.triple.venn(area1 = 34, area2 = 55, area3 = 55, n12 = length(intersect(saset,gaset)), n23 = length(intersect(maset,gaset)), n13 = length(intersect(saset,maset)), 
+    n123 = length(intersect(maset,intersect(saset,gaset))), category = c("SA", "GA", "MA"), lty = "blank", 
+    fill = c("skyblue", "pink1", "mediumorchid"))
