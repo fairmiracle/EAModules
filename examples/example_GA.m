@@ -39,9 +39,20 @@ clear all
 addpath('../EAModules/utils/')
 addpath('../EAModules/functions/')
 addpath('../data/')
-load('galdata.mat')
+load('PPIGSE35103.mat')
 popsize = 100;
 crossrate = 0.9;
 mutrate = 0.5;
-iteration = 10000;
+iteration = 1000;
+for i = 1:10
 [corrected_subnet_score_GA,fsubset_GA,func_GA] = GA(G, array_basic_z, randomscore,popsize,crossrate,mutrate,iteration);
+
+fid = fopen('result.txt', 'a+');
+fprintf(fid, '%f \n', corrected_subnet_score_GA);
+fprintf(fid, '%s \n\n', num2str(fsubset_GA));
+fclose(fid);
+
+G(fsubset_GA,:)=[];
+G(:,fsubset_GA)=[];
+array_basic_z(fsubset_GA)=[];
+end

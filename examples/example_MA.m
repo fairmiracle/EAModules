@@ -45,4 +45,22 @@ crossrate = 0.9;
 lsrate = 0.5;
 iteration = 10000;
 lsiter = 10;
+%[corrected_subnet_score_MA, fsubset_MA,func_MA] = MA(G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration);
+
+for i = 1:10
 [corrected_subnet_score_MA, fsubset_MA,func_MA] = MA(G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration);
+
+fid = fopen('result.txt', 'a+');
+fprintf(fid, '%f \n', corrected_subnet_score_MA);
+fprintf(fid, '%s \n\n', num2str(fsubset_MA));
+fclose(fid);
+
+disp(GeneNames(fsubset_MA));
+
+
+G(fsubset_MA,:)=[];
+G(:,fsubset_MA)=[];
+array_basic_z(fsubset_MA)=[];
+randomscore(fsubset_MA,:)=[];
+GeneNames(fsubset_MA) = [];
+end

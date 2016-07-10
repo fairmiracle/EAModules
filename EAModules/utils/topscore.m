@@ -1,5 +1,5 @@
 %% FUNCTION topscore
-%   find the maximal module score for  given node set, based on connected
+%   find the maximal module score for given node set, based on connected
 %   component finding on current node set.
 %
 %% INPUT
@@ -49,7 +49,7 @@ labels = unique(Lnew);
 for i = 1:length(labels)
     nodeList = nodeset(find(Lnew==labels(i)));
     k=length(nodeList);
-    aggregate_score =sum(array_basic_z(nodeList))/sqrt(k);
+    aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
     compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
     if compscore > s
         s = compscore;
