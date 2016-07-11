@@ -1,0 +1,6 @@
+Code structure
+==============
+- EAModules: core functions of evolutionary algorithms for module identification.
+    - R: R code of genetic algorithm, modified from COSINE package.
+    - functions: core functions of evolutionary algorithms including SA, GA and MA.
+    - utils: 

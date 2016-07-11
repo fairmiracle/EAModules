@@ -44,8 +44,9 @@ popsize = 100;
 crossrate = 0.9;
 mutrate = 0.5;
 iteration = 1000;
+modulesize = 200;
 for i = 1:10
-[corrected_subnet_score_GA,fsubset_GA,func_GA] = GA(G, array_basic_z, randomscore,popsize,crossrate,mutrate,iteration);
+[corrected_subnet_score_GA,fsubset_GA,func_GA] = GA(G, array_basic_z, randomscore,modulesize,popsize,crossrate,mutrate,iteration);
 
 fid = fopen('result.txt', 'a+');
 fprintf(fid, '%f \n', corrected_subnet_score_GA);

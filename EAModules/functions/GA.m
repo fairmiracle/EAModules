@@ -38,7 +38,7 @@
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
 %  [2] Memetic algorithm for finding active connected subnetworks in intracellular networks. Dong Li et al, 2016
 
-function [corrected_subnet_score, fsubset,func] = GA(G, array_basic_z, randomscore,popsize,crossrate,mutrate,iteration)
+function [corrected_subnet_score, fsubset,func] = GA(G, array_basic_z, randomscore, modulesize, popsize,crossrate,mutrate,iteration)
 
 if nargin < 7
     error('\n Inputs: G, array_basic_z, randomscore,popsize,crossrate,mutrate,iteration should be specified!\n');
@@ -51,7 +51,7 @@ for i = 1:popsize
     nodelist = zeros(1,N);
     nodelist(nodeSet) = 1;
     indiv.nodes = nodelist;
-    [s1,topset] = topscore(G,array_basic_z,randomscore,nodeSet);
+    [s1,topset] = topscore(G,array_basic_z,randomscore,nodeSet,modulesize);
     indiv.score = s1;
     Pop{i} = indiv;
 end
@@ -118,7 +118,7 @@ for T = 1:iteration
     %compute fitness score
     for i = 1:popsize
         nodeSet = find(Pop{i}.nodes==1);
-        [s1,topset] = topscore(G,array_basic_z,randomscore,nodeSet);
+        [s1,topset] = topscore(G,array_basic_z,randomscore,nodeSet,modulesize);
         Pop{i}.score = s1;
     end
     times(T) = toc;
@@ -136,4 +136,4 @@ totaltime = toc;
 
 [B,I] = sort(allscore,'descend');
 nodeSet = find(Pop{I(1)}.nodes==1);
-[corrected_subnet_score, fsubset] = topscore(G,array_basic_z,randomscore,nodeSet);
+[corrected_subnet_score, fsubset] = topscore(G,array_basic_z,randomscore,nodeSet,modulesize);
