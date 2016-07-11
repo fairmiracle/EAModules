@@ -47,11 +47,11 @@ N = length(G);
 Pop = cell(popsize,1);
 for i = 1:popsize
     v = randperm(N);
-    nodeSet = v(1:ceil(N*rand()));
+    nodeSet = v(1:modulesize);
     nodelist = zeros(1,N);
     nodelist(nodeSet) = 1;
     indiv.nodes = nodelist;
-    [s1,topset] = topscore(G,array_basic_z,randomscore,nodeSet,modulesize);
+    [s1,topset] = topscore(G,array_basic_z,randomscore,nodeSet);
     indiv.score = s1;
     Pop{i} = indiv;
 end
@@ -107,7 +107,9 @@ for T = 1:iteration
         if nodes1(mutatepoint) == 1
             nodes1(mutatepoint) = 0;
         else
-            nodes1(mutatepoint) = 1;
+            if (sum(nodes1) < modulesize)
+                nodes1(mutatepoint) = 1;
+            end
         end
         Popnew{p1}.nodes =  nodes1;
     end
@@ -118,7 +120,7 @@ for T = 1:iteration
     %compute fitness score
     for i = 1:popsize
         nodeSet = find(Pop{i}.nodes==1);
-        [s1,topset] = topscore(G,array_basic_z,randomscore,nodeSet,modulesize);
+        [s1,topset] = topscore(G,array_basic_z,randomscore,nodeSet);
         Pop{i}.score = s1;
     end
     times(T) = toc;
@@ -136,4 +138,4 @@ totaltime = toc;
 
 [B,I] = sort(allscore,'descend');
 nodeSet = find(Pop{I(1)}.nodes==1);
-[corrected_subnet_score, fsubset] = topscore(G,array_basic_z,randomscore,nodeSet,modulesize);
+[corrected_subnet_score, fsubset] = topscore(G,array_basic_z,randomscore,nodeSet);

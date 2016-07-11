@@ -37,7 +37,7 @@
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
 %  [2] Memetic algorithm for finding active connected subnetworks in intracellular networks. Dong Li et al, 2016
 
-function [s,subset] = topscore(G,array_basic_z,randomscore,nodeset,maxmodulesize)
+function [s,subset] = topscore(G,array_basic_z,randomscore,nodeset)
 
 if nargin < 4
     error('\n Inputs: G, array_basic_z, randomscore, nodeset should be specified!\n');
@@ -46,37 +46,49 @@ end
 s = -inf;
 [Lnew, Cnew] = graph_conn_comp(G(nodeset,nodeset));
 labels = unique(Lnew);
+% for i = 1:length(labels)
+%     nodeList = nodeset(find(Lnew==labels(i)));
+%     k=length(nodeList);
+%     % put module size constraint
+%     % if resulted module is too large then partition. But this is not best
+%     if k > maxmodulesize
+%         p = randperm(k);
+%         for j = 1:ceil(k/maxmodulesize)
+%             tmpnodeset = nodeList(p((j-1)*maxmodulesize+1:min(k,j*maxmodulesize)));
+%             [tmpLnew, tmpCnew] = graph_conn_comp(G(tmpnodeset,tmpnodeset));
+%             tmplabels = unique(tmpLnew);
+%             
+%             for insidek = 1:length(tmplabels)
+%                 tmpnodeList = nodeList(find(tmpLnew==tmplabels(insidek)));
+%                 tmpk = length(tmpnodeList);
+%                 aggregate_score = sum(array_basic_z(tmpnodeList))/sqrt(tmpk);
+%                 compscore = (aggregate_score - randomscore(tmpk,1))/randomscore(tmpk,2);
+%                 if compscore > s
+%                     s = compscore;
+%                     subset = tmpnodeList;
+%                 end
+%             end
+%         end
+%         
+%     else
+%         aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
+%         compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
+%         if compscore > s
+%             s = compscore;
+%             subset = nodeList;
+%         end
+%     end
+%     
+% end
 for i = 1:length(labels)
     nodeList = nodeset(find(Lnew==labels(i)));
     k=length(nodeList);
-    % put module size constraint
-    % if resulted module is too large then partition
-    if k > maxmodulesize
-        p = randperm(k);
-        for j = 1:ceil(k/maxmodulesize)
-            tmpnodeset = nodeList(p((j-1)*maxmodulesize+1:min(k,j*maxmodulesize)));
-            [tmpLnew, tmpCnew] = graph_conn_comp(G(tmpnodeset,tmpnodeset));
-            tmplabels = unique(tmpLnew);
-            
-            for insidek = 1:length(tmplabels)
-                tmpnodeList = nodeList(find(tmpLnew==tmplabels(insidek)));
-                tmpk = length(tmpnodeList);
-                aggregate_score = sum(array_basic_z(tmpnodeList))/sqrt(tmpk);
-                compscore = (aggregate_score - randomscore(tmpk,1))/randomscore(tmpk,2);
-                if compscore > s
-                    s = compscore;
-                    subset = tmpnodeList;
-                end
-            end
-        end
-        
-    else
-        aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
-        compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
-        if compscore > s
-            s = compscore;
-            subset = nodeList;
-        end
+    
+    aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
+    compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
+    if compscore > s
+        s = compscore;
+        subset = nodeList;
     end
     
 end

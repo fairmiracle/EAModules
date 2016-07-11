@@ -38,7 +38,7 @@
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
 %  [2] Memetic algorithm for finding active connected subnetworks in intracellular networks. Dong Li et al, 2016
 
-function [corrected_subnet_score, fsubset,func] = MA(G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration)
+function [corrected_subnet_score, fsubset,func] = MA(G, array_basic_z, randomscore,modulesize,popsize,crossrate,lsrate,lsiter,iteration)
 
 if nargin < 8
     error('\n Inputs: G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration should be specified!\n');
@@ -47,7 +47,7 @@ N = length(G);
 Pop = cell(popsize,1);
 for i = 1:popsize
     v = randperm(N);
-    nodeSet = v(1:ceil(N*rand()));
+    nodeSet = v(1:modulesize);
     nodelist = zeros(1,N);
     nodelist(nodeSet) = 1;
     indiv.nodes = nodelist;
@@ -113,7 +113,9 @@ for T = 1:iteration
             if nodes1(mutatepoint) == 1
                 nodes1(mutatepoint) = 0;
             else
-                nodes1(mutatepoint) = 1;
+                if (sum(nodes1) < modulesize)
+                    nodes1(mutatepoint) = 1;
+                end
             end
             nodeSet = find(nodes1==1);
             [topkscore,topkset] = topscore(G,array_basic_z,randomscore,nodeSet);

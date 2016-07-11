@@ -43,4 +43,4 @@ load('galdata.mat')
 T_start = 1;
 T_end = 0.001;
 iteration = 100000;
-[corrected_subnet_score_SA, fsubset_SA,func_SA] = SA(G, array_basic_z, randomscore,T_start,T_end,iteration);
+[corrected_subnet_score_SA, fsubset_SA,func_SA] = SA(G, array_basic_z, randomscore,modulesize,T_start,T_end,iteration);
