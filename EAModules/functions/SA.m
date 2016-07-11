@@ -66,6 +66,8 @@ for i = 1:iteration
         if (k < modulesize)
             new_index_subnet = [new_index_subnet, new_node];
             new_k = k+1;
+        else
+            new_k = k;
         end
     end
     [new_corrected_subnet_score,fsubset] = topscore(G,array_basic_z,randomscore,new_index_subnet);
