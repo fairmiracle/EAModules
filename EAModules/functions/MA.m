@@ -5,6 +5,7 @@
 %   G: n*n adjacency matrix of the network
 %   array_basic_z: n*1 vecor, z-score of the nodes
 %   randomscore: n*2 matrix, the i-th row are the mean and sd of random
+%   modulesize: maximal module size
 %   subnetwork of size i
 %   popsize: population size
 %   crossrate: cross rate of population
