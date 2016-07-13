@@ -5,7 +5,8 @@
 %   G: n*n adjacency matrix of the network
 %   array_basic_z: n*1 vecor, z-score of the nodes
 %   randomscore: n*2 matrix, the i-th row are the mean and sd of random
-%   modulesize: maximal module size
+%   minmodulesize: minimal module size
+%   maxmodulesize: maximal module size
 %   subnetwork of size i
 %   popsize: population size
 %   crossrate: cross rate of population
@@ -39,7 +40,7 @@
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
 %  [2] Memetic algorithm for finding active connected subnetworks in intracellular networks. Dong Li et al, 2016
 
-function [corrected_subnet_score, fsubset,func] = GA(G, array_basic_z, randomscore, modulesize, popsize,crossrate,mutrate,iteration)
+function [corrected_subnet_score, fsubset,func] = GA(G, array_basic_z, randomscore, minmodulesize, maxmodulesize, popsize,crossrate,mutrate,iteration)
 
 if nargin < 7
     error('\n Inputs: G, array_basic_z, randomscore,popsize,crossrate,mutrate,iteration should be specified!\n');
@@ -48,7 +49,7 @@ N = length(G);
 Pop = cell(popsize,1);
 for i = 1:popsize
     v = randperm(N);
-    nodeSet = v(1:modulesize);
+    nodeSet = v(1:maxmodulesize);
     nodelist = zeros(1,N);
     nodelist(nodeSet) = 1;
     indiv.nodes = nodelist;
@@ -106,9 +107,11 @@ for T = 1:iteration
         nodes1 = Popnew{p1}.nodes;
         mutatepoint =  ceil(N*rand());
         if nodes1(mutatepoint) == 1
-            nodes1(mutatepoint) = 0;
+           if (sum(nodes1) > minmodulesize)
+                nodes1(mutatepoint) = 0;
+           end
         else
-            if (sum(nodes1) < modulesize)
+            if (sum(nodes1) < maxmodulesize)
                 nodes1(mutatepoint) = 1;
             end
         end

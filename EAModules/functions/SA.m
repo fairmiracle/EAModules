@@ -5,7 +5,8 @@
 %   G: n*n adjacency matrix of the network
 %   array_basic_z: n*1 vecor, z-score of the nodes
 %   randomscore: n*2 matrix, the i-th row are the mean and sd of random
-%   modulesize: maximal module size
+%   minodulesize: minimal module size
+%   maxmodulesize: maximal module size
 %   subnetwork of size i
 %   T: starting temperature
 %   T_end: ending temperature
@@ -38,7 +39,7 @@
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
 %  [2] Memetic algorithm for finding active connected subnetworks in intracellular networks. Dong Li et al, 2016
 
-function [corrected_subnet_score, fsubset,func] = SA(G, array_basic_z, randomscore,modulesize,T,T_end,iteration)
+function [corrected_subnet_score, fsubset,func] = SA(G, array_basic_z, randomscore,minmodulesize,maxmodulesize,T,T_end,iteration)
 
 if nargin < 6
     error('\n Inputs: G, array_basic_z, randomscore,T,T_end,iteration should be specified!\n');
@@ -48,7 +49,7 @@ prob_active_inactive = 0.1;
 
 N = length(G);
 v = randperm(N);
-index_subnet = v(1:modulesize);
+index_subnet = v(1:maxmodulesize);
 
 temp_step = 1 - (T_end/T)^(1.0/iteration);
 
@@ -60,10 +61,14 @@ for i = 1:iteration
     new_node =ceil(rand()*N);
     new_index_subnet = index_subnet;
     if ismember(new_node,index_subnet)
-        new_index_subnet(new_index_subnet==new_node)=[];
-        new_k = k-1;
+        if (k > minmodulesize)
+            new_index_subnet(new_index_subnet==new_node)=[];
+            new_k = k-1;
+        else
+            new_k = k;
+        end
     else
-        if (k < modulesize)
+        if (k < maxmodulesize)
             new_index_subnet = [new_index_subnet, new_node];
             new_k = k+1;
         else
