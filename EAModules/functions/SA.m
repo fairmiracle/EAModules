@@ -6,6 +6,7 @@
 %   array_basic_z: n*1 vecor, z-score of the nodes
 %   randomscore: n*2 matrix, the i-th row are the mean and sd of random
 %   minodulesize: minimal module size
+%   maxmodulesize: maximal module size
 %   subnetwork of size i
 %   T: starting temperature
 %   T_end: ending temperature
