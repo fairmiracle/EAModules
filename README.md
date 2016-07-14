@@ -1,15 +1,15 @@
 EAModules
 ==============
-A package for modules identification using evolutionary algorithms
+A package for modules identification using evolutionary algorithms.
 
 Code structure
 ==============
 - EAModules: core functions of evolutionary algorithms for module identification.
     - R: R code of genetic algorithm, modified from COSINE package.
         - functions: core functions of evolutionary algorithms including SA, GA and MA.
-	    - utils: utilities for supporting core functions like connected component finding and fitness
-	    - data: benchmark and real-world data
-	    - examples: example scripts to call functions
+	    - utils: utilities for supporting core functions like connected component finding and fitness.
+	    - data: benchmark and real-world data.
+	    - examples: example scripts to call functions.
 
 Reference
 ==============
