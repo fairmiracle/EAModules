@@ -1,6 +1,5 @@
-
 EAModules
-
+==============
 A package for modules identification using evolutionary algorithms
 
 Code structure
