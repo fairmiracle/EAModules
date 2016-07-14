@@ -1,5 +1,4 @@
 EAModules
-
 A package for modules identification using evolutionary algorithms
 
 Code structure
@@ -11,8 +10,8 @@ Code structure
 	    - data: benchmark and real-world data
 	    - examples: example scripts to call functions
 
-	    Reference
-	    ==============
-	    Memetic algorithm for finding active connected subnetworks in intracellular networks.
+Reference
+==============
+Memetic algorithm for finding active connected subnetworks in intracellular networks.
 
-	    For any questions, please contact Dong Li at dxl466@cs.bham.ac.uk.
+For any questions, please contact Dong Li at dxl466@cs.bham.ac.uk.
