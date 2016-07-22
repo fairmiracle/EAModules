@@ -9,8 +9,9 @@ Code structure
 	- utils: utilities for supporting core functions like connected component finding and fitness.
 	- R: R code of genetic algorithm, modified from COSINE package.
 - data: benchmark and real-world data.
-- examples: example scripts to call functions.
+- examples: example scripts to call functions, including Supplementary files used in the paper.
 
+To construct PPI network, check another package https://github.com/fairmiracle/PPINet.
 Reference
 ==============
 Memetic algorithm for finding active connected subnetworks in intracellular networks.
