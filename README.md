@@ -9,7 +9,7 @@ Code structure
 	- utils: utilities for supporting core functions like connected component finding and fitness.
 	- R: R code of genetic algorithm, modified from COSINE package.
 - data: benchmark and real-world data.
-- examples: example scripts to call functions, including Supplementary files used in the paper.
+- examples: example scripts to call functions, including supplementary files used in the paper.
 
 To construct PPI network, check another package https://github.com/fairmiracle/PPINet.
 Reference
