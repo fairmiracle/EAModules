@@ -14,6 +14,6 @@ Code structure
 To construct PPI network, check another package https://github.com/fairmiracle/PPINet.
 Reference
 ==============
-Memetic algorithm for finding active connected subnetworks in intracellular networks.
+Active module identification in intracellular networks using a memetic algorithm with a new binary decoding scheme.
 
 For any questions, please contact Dong Li at dxl466@cs.bham.ac.uk.
