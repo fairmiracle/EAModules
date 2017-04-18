@@ -1,9 +1,11 @@
 %% FUNCTION TOPSCOREMULTILAYER
 %   calculated the highest-scoring connected component with given nodes
-%   set, in a multilayer network
+%   set, in a multilayer network. The current strategy is to find the 
+%   highest-scoring connected component of each layer, and find the maximal
+%   consensus one as the final result
 %
 %% INPUT
-%   TG: a k*n*n tensor, each slice is a n*n adjacency matrix
+%   TG: a k*n*n tensor, each slice is a n*n adjacency matrix G
 %   nodesocre_z: k*n matrix, each column is a vecor, z-score of the nodes
 %   randomscore: n*2 matrix, the i-th row are the mean and sd of random
 %   nodeset: given nodes set
@@ -34,7 +36,8 @@
 %
 %% Related papers
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
-%  [2] Michael Grant and Stephen Boyd. CVX: Matlab software for disciplined convex programming, version 2.0 beta. http://cvxr.com/cvx, September 2013.
+%  [2] Active module identification in intracellular networks using a memetic algorithm with a new binary decoding scheme. Dong Li et al, BMC Genomics 2017
+%  [3] Michael Grant and Stephen Boyd. CVX: Matlab software for disciplined convex programming, version 2.0 beta. http://cvxr.com/cvx, September 2013.
 
 function [s,subset] = topscore(TG,nodesocre_z,randomscore,nodeset)
 
@@ -42,22 +45,36 @@ if nargin < 4
     error('\n Inputs: G, array_basic_z, randomscore, nodeset should be specified!\n');
 end
 k = size(TG,1);
-G = TG(k,:,:);
-array_basic_z = nodesocre_z(k,:);
-
-s = -inf;
-[Lnew, Cnew] = graph_conn_comp(G(nodeset,nodeset));
-labels = unique(Lnew);
-
-for i = 1:length(labels)
-    nodeList = nodeset(find(Lnew==labels(i)));
-    k=length(nodeList);
-    compscore = sum(array_basic_z(nodeList))/sqrt(k);
-    %aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
-    %compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
-    if compscore > s
-        s = compscore;
-        subset = nodeList;
-    end
+C = cell(k,2)
+for layers = 1:k
+    G = TG(k,:,:);
+    array_basic_z = nodesocre_z(k,:);
+    s = -inf;
+    [Lnew, Cnew] = conncomp(G(nodeset,nodeset));
+    labels = unique(Lnew);
     
+    for i = 1:length(labels)
+        nodeList = nodeset(find(Lnew==labels(i)));
+        k=length(nodeList);
+        compscore = sum(array_basic_z(nodeList))/sqrt(k);
+        %aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
+        %compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
+        if compscore > s
+            s = compscore;
+            subset = nodeList;
+        end
+    end
+    C{k,1}=subset;
+    C{k,2}=s;
 end
+
+% give a set of component, find the maximal consensus one
+
+%http://stackoverflow.com/questions/16883367/how-to-find-connected-components-in-matlab
+function [S,C] = conncomp(G)
+  [p,q,r] = dmperm(G'+speye(size(G)));
+  S = numel(r)-1;
+  C = cumsum(full(sparse(1,r(1:end-1),1,1,size(G,1))));
+  C(p) = C;
+end
+
