@@ -1,9 +1,10 @@
-%% FUNCTION TOPSCORE
-%   calculated the highest-scoring connected component with given nodes set
+%% FUNCTION TOPSCOREMULTILAYER
+%   calculated the highest-scoring connected component with given nodes
+%   set, in a multilayer network
 %
 %% INPUT
-%   G: n*n adjacency matrix of the network
-%   array_basic_z: n*1 vecor, z-score of the nodes
+%   TG: a k*n*n tensor, each slice is a n*n adjacency matrix
+%   nodesocre_z: k*n matrix, each column is a vecor, z-score of the nodes
 %   randomscore: n*2 matrix, the i-th row are the mean and sd of random
 %   nodeset: given nodes set
 
@@ -24,22 +25,25 @@
 %   You should have received a copy of the GNU General Public License
 %   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
-%   Copyright (C) 2015 - 2016 Dong Li
+%   Copyright (C) 2017 Dong Li
 %
 %   You are suggested to first read the Manual.
 %   For any problem, please contact with Dong Li via donggeat@gmail.com
 %
-%   Last modified on June 1, 2016.
+%   Last modified on April 18, 2017.
 %
 %% Related papers
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
-%  [2] Active module identification in intracellular networks using a memetic algorithm with a new binary decoding scheme. Dong Li et al, BMC Genomics 2017
+%  [2] Michael Grant and Stephen Boyd. CVX: Matlab software for disciplined convex programming, version 2.0 beta. http://cvxr.com/cvx, September 2013.
 
-function [s,subset] = topscore(G,array_basic_z,randomscore,nodeset)
+function [s,subset] = topscore(TG,nodesocre_z,randomscore,nodeset)
 
 if nargin < 4
     error('\n Inputs: G, array_basic_z, randomscore, nodeset should be specified!\n');
 end
+k = size(TG,1);
+G = TG(k,:,:);
+array_basic_z = nodesocre_z(k,:);
 
 s = -inf;
 [Lnew, Cnew] = graph_conn_comp(G(nodeset,nodeset));

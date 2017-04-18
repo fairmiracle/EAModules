@@ -24,22 +24,22 @@
 %   You should have received a copy of the GNU General Public License
 %   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
-%   Copyright (C) 2015 - 2016 Dong Li and Shan He
+%   Copyright (C) 2015 - 2016 Dong Li
 %
 %   You are suggested to first read the Manual.
-%   For any problem, please contact with Dong Li via dxl466@cs.bham.ac.uk
+%   For any problem, please contact with Dong Li via donggeat@gmail.com
 %
 %   Last modified on June 1, 2016.
 %
 %% Related papers
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
-%  [2] Memetic algorithm for finding active connected subnetworks in intracellular networks. Dong Li et al, 2016
+%  [2] Active module identification in intracellular networks using a memetic algorithm with a new binary decoding scheme. Dong Li et al, BMC Genomics 2017
 
 clear all
 addpath('../EAModules/utils/')
 addpath('../EAModules/functions/')
 addpath('../data/')
-load('PPIGSE35103.mat')
+load('galdata.mat')
 popsize = 100;
 crossrate = 0.9;
 mutrate = 0.5;

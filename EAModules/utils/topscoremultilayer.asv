@@ -1,12 +1,17 @@
-%% Examples
+%% FUNCTION GA
 %   genetic algorithm for active modules identification in molecular interaction networks
 %
 %% INPUT
 %   G: n*n adjacency matrix of the network
 %   array_basic_z: n*1 vecor, z-score of the nodes
 %   randomscore: n*2 matrix, the i-th row are the mean and sd of random
+%   minmodulesize: minimal module size
+%   maxmodulesize: maximal module size
 %   subnetwork of size i
-%
+%   popsize: population size
+%   crossrate: cross rate of population
+%   mutrate: mutation rate of population
+%   iteration: maximal iteration
 %% OUTPUT
 %   Module membership
 %
@@ -24,46 +29,36 @@
 %   You should have received a copy of the GNU General Public License
 %   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
-%   Copyright (C) 2015 - 2016 Dong Li
+%   Copyright (C) 2017 Dong Li
 %
 %   You are suggested to first read the Manual.
 %   For any problem, please contact with Dong Li via donggeat@gmail.com
 %
-%   Last modified on June 1, 2016.
+%   Last modified on April 18, 2017.
 %
 %% Related papers
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
-%  [2] Active module identification in intracellular networks using a memetic algorithm with a new binary decoding scheme. Dong Li et al, BMC Genomics 2017
+%  [2] Michael Grant and Stephen Boyd. CVX: Matlab software for disciplined convex programming, version 2.0 beta. http://cvxr.com/cvx, September 2013.
 
-clear all
-addpath('../EAModules/utils/')
-addpath('../EAModules/functions/')
-addpath('../data/')
-load('galdata.mat')
-popsize = 100;
-crossrate = 0.9;
-lsrate = 0.5;
-iteration = 10000;
-lsiter = 10;
-minmodulesize = 10;
-maxmodulesize = 100;
+function [s,subset] = topscore(G,array_basic_z,randomscore,nodeset)
 
-%[corrected_subnet_score_MA, fsubset_MA,func_MA] = MA(G, array_basic_z, randomscore,popsize,crossrate,lsrate,lsiter,iteration);
+if nargin < 4
+    error('\n Inputs: G, array_basic_z, randomscore, nodeset should be specified!\n');
+end
 
-for i = 1:10
-[corrected_subnet_score_MA, fsubset_MA,func_MA] = MA(G, array_basic_z, randomscore,minmodulesize,maxmodulesize,popsize,crossrate,lsrate,lsiter,iteration);
+s = -inf;
+[Lnew, Cnew] = graph_conn_comp(G(nodeset,nodeset));
+labels = unique(Lnew);
 
-fid = fopen('result.txt', 'a+');
-fprintf(fid, '%f \n', corrected_subnet_score_MA);
-fprintf(fid, '%s \n\n', num2str(fsubset_MA));
-fclose(fid);
-
-disp(GeneNames(fsubset_MA));
-
-
-G(fsubset_MA,:)=[];
-G(:,fsubset_MA)=[];
-array_basic_z(fsubset_MA)=[];
-randomscore(fsubset_MA,:)=[];
-GeneNames(fsubset_MA) = [];
+for i = 1:length(labels)
+    nodeList = nodeset(find(Lnew==labels(i)));
+    k=length(nodeList);
+    compscore = sum(array_basic_z(nodeList))/sqrt(k);
+    %aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
+    %compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
+    if compscore > s
+        s = compscore;
+        subset = nodeList;
+    end
+    
 end
