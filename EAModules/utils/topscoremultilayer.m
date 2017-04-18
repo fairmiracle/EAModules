@@ -80,12 +80,14 @@ end
 
 %http://stackoverflow.com/questions/21078445/find-connected-components-in-a-graph
 global vistable;
-function dfs(v,vistable,G)
+global C;
+function dfs(v,vistable,G,C)
     idxu = G(v,:);
     for i=1:length(idxu)
         if vistable(idxu(i))==0
-            vistable(idxu(i))=1
-            dfs(idxu(i),vistable,G)
+            vistable(idxu(i))=1;
+            C(idxu(i))=C(v);
+            dfs(idxu(i),vistable,G,C);
         end
     end
 end
@@ -99,8 +101,8 @@ function [S,C] = dfsconncomp(G)
         if vistable(i)==0
             vistable(i)=1;
             S = S+1;
-            %C(i) = S;
-            dfs(i,vistable,G)
+            C(i) = S;
+            dfs(i,vistable,G,C);
         end
     end
 end
