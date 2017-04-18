@@ -78,3 +78,29 @@ function [S,C] = conncomp(G)
   C(p) = C;
 end
 
+%http://stackoverflow.com/questions/21078445/find-connected-components-in-a-graph
+global vistable;
+function dfs(v,vistable,G)
+    idxu = G(v,:);
+    for i=1:length(idxu)
+        if vistable(idxu(i))==0
+            vistable(idxu(i))=1
+            dfs(idxu(i),vistable,G)
+        end
+    end
+end
+
+function [S,C] = dfsconncomp(G)
+    S = 0;
+    C = zeros(n,1);
+    n = size(G,1);
+    vistable = zeros(n,1);
+    for i = 1:n
+        if vistable(i)==0
+            vistable(i)=1;
+            S = S+1;
+            %C(i) = S;
+            dfs(i,vistable,G)
+        end
+    end
+end
