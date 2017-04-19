@@ -7,7 +7,6 @@
 %% INPUT
 %   TG: a k*n*n tensor, each slice is a n*n adjacency matrix G
 %   nodesocre_z: k*n matrix, each column is a vecor, z-score of the nodes
-%   randomscore: n*2 matrix, the i-th row are the mean and sd of random
 %   nodeset: given nodes set
 
 %% OUTPUT
@@ -39,22 +38,35 @@
 %  [2] Active module identification in intracellular networks using a memetic algorithm with a new binary decoding scheme. Dong Li et al, BMC Genomics 2017
 %  [3] Michael Grant and Stephen Boyd. CVX: Matlab software for disciplined convex programming, version 2.0 beta. http://cvxr.com/cvx, September 2013.
 
-function [s,subset] = topscore(TG,nodesocre_z,randomscore,nodeset)
+% give a set of component, find the maximal consensus one
+% the idea is to consruct the consensus graph first, and then find the 
+% connected component on the graph
+
+function [s,subset] = topscoremultilayer(TG,nodesocre_z,nodeset)
 
 if nargin < 4
     error('\n Inputs: G, array_basic_z, randomscore, nodeset should be specified!\n');
 end
 k = size(TG,1);
-C = cell(k,2)
-for layers = 1:k
-    G = TG(k,:,:);
-    array_basic_z = nodesocre_z(k,:);
+C = cell(k,2);
+G = TG(1,:,:);
+array_basic_z = nodesocre_z(1,:);
+    
+for layer=2:k
+    G = G+TG(layer,:,:);
+    array_basic_z = array_basic_z+nodesocre_z(layer,:);
+end
+
+consensusratio = round(k*0.5);
+G(G<consensusratio)=0;
+G(G>consensusratio)=1;
+    
     s = -inf;
     [Lnew, Cnew] = conncomp(G(nodeset,nodeset));
     labels = unique(Lnew);
     
     for i = 1:length(labels)
-        nodeList = nodeset(find(Lnew==labels(i)));
+        nodeList = nodeset(Lnew==labels(i));
         k=length(nodeList);
         compscore = sum(array_basic_z(nodeList))/sqrt(k);
         %aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
@@ -64,11 +76,10 @@ for layers = 1:k
             subset = nodeList;
         end
     end
-    C{k,1}=subset;
-    C{k,2}=s;
+
 end
 
-% give a set of component, find the maximal consensus one
+
 
 %http://stackoverflow.com/questions/16883367/how-to-find-connected-components-in-matlab
 function [S,C] = conncomp(G)
@@ -79,30 +90,30 @@ function [S,C] = conncomp(G)
 end
 
 %http://stackoverflow.com/questions/21078445/find-connected-components-in-a-graph
-global vistable;
-global C;
-function dfs(v,vistable,G,C)
-    idxu = G(v,:);
-    for i=1:length(idxu)
-        if vistable(idxu(i))==0
-            vistable(idxu(i))=1;
-            C(idxu(i))=C(v);
-            dfs(idxu(i),vistable,G,C);
-        end
-    end
-end
-
-function [S,C] = dfsconncomp(G)
-    S = 0;
-    C = zeros(n,1);
-    n = size(G,1);
-    vistable = zeros(n,1);
-    for i = 1:n
-        if vistable(i)==0
-            vistable(i)=1;
-            S = S+1;
-            C(i) = S;
-            dfs(i,vistable,G,C);
-        end
-    end
-end
+% global vistable;
+% global C;
+% function dfs(v,vistable,G,C)
+%     idxu = G(v,:);
+%     for i=1:length(idxu)
+%         if vistable(idxu(i))==0
+%             vistable(idxu(i))=1;
+%             C(idxu(i))=C(v);
+%             dfs(idxu(i),vistable,G,C);
+%         end
+%     end
+% end
+% 
+% function [S,C] = dfsconncomp(G)
+%     S = 0;
+%     C = zeros(n,1);
+%     n = size(G,1);
+%     vistable = zeros(n,1);
+%     for i = 1:n
+%         if vistable(i)==0
+%             vistable(i)=1;
+%             S = S+1;
+%             C(i) = S;
+%             dfs(i,vistable,G,C);
+%         end
+%     end
+% end
