@@ -91,6 +91,6 @@ for i = 1:iteration
         end
     end
     func(i) = corrected_subnet_score;
-    %disp(['completed ' num2str(i/iteration)]);
+    disp(['completed ' num2str(i/iteration)]);
 end
 [corrected_subnet_score, fsubset] = topscore(G,array_basic_z,randomscore,index_subnet);
