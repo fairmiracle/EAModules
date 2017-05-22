@@ -2,7 +2,7 @@
 %   calculated the highest-scoring connected component with given nodes
 %   set, in a multilayer network. The current strategy is to find the 
 %   highest-scoring connected component of each layer, and find the maximal
-%   consensus one as the final result. The function is expired since the
+%   consensus one as the final result. The function is *deprecated* since the
 %   consensus graph can be constructed at first place.
 %
 %% INPUT
