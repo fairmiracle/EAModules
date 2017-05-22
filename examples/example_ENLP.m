@@ -15,12 +15,12 @@
 %   You should have received a copy of the GNU General Public License
 %   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
-%   Copyright (C) 2015 - 2016 Dong Li
+%   Copyright (C) 2017 Dong Li
 %
 %   You are suggested to first read the Manual.
 %   For any problem, please contact with Dong Li via donggeat@gmail.com
 %
-%   Last modified on June 1, 2016.
+%   Last modified on May 22, 2017.
 %
 %% Related papers
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
@@ -31,21 +31,16 @@ addpath('../EAModules/utils/')
 addpath('../EAModules/functions/')
 addpath('../data/')
 load('galdata.mat')
-popsize = 100;
-crossrate = 0.9;
-mutrate = 0.5;
-iteration = 1000;
 minmodulesize = 10;
 maxmodulesize = 100;
 for i = 1:10
-[corrected_subnet_score_GA,fsubset_GA,func_GA] = GA(G, array_basic_z, randomscore,minmodulesize, maxmodulesize,popsize,crossrate,mutrate,iteration);
-
+[corrected_subnet_scorelp, fsubsetlp] = ENLP(G, array_basic_z,randomscore, minmodulesize, maxmodulesize,20);
 fid = fopen('result.txt', 'a+');
-fprintf(fid, '%f \n', corrected_subnet_score_GA);
-fprintf(fid, '%s \n\n', num2str(fsubset_GA'));
+fprintf(fid, '%f \n', corrected_subnet_scorelp);
+fprintf(fid, '%s \n\n', num2str(fsubsetlp'));
 fclose(fid);
 
-G(fsubset_GA,:)=[];
-G(:,fsubset_GA)=[];
-array_basic_z(fsubset_GA)=[];
+G(fsubsetlp,:)=[];
+G(:,fsubsetlp)=[];
+array_basic_z(fsubsetlp)=[];
 end

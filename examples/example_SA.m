@@ -1,15 +1,6 @@
 %% Examples
 %   simulated annealing for active modules identification in molecular interaction networks
 %
-%% INPUT
-%   G: n*n adjacency matrix of the network
-%   array_basic_z: n*1 vecor, z-score of the nodes
-%   randomscore: n*2 matrix, the i-th row are the mean and sd of random
-%   subnetwork of size i
-%
-%% OUTPUT
-%   Module membership
-%
 %% LICENSE
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by

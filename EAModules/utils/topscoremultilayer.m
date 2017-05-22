@@ -36,7 +36,8 @@
 %% Related papers
 %  [1] Discovering regulatory and signalling circuits in molecular interaction networks. Trey Ideker et al, Bioinformatics 2002
 %  [2] Active module identification in intracellular networks using a memetic algorithm with a new binary decoding scheme. Dong Li et al, BMC Genomics 2017
-%  [3] Michael Grant and Stephen Boyd. CVX: Matlab software for disciplined convex programming, version 2.0 beta. http://cvxr.com/cvx, September 2013.
+%  [3] Active module identification in multi-layer intracellular networks using constrained linear programming. Dong Li et al, in prearing
+%  [4] Michael Grant and Stephen Boyd. CVX: Matlab software for disciplined convex programming, version 2.0 beta. http://cvxr.com/cvx, September 2013.
 
 % give a set of component, find the maximal consensus one
 % the idea is to consruct the consensus graph first, and then find the 

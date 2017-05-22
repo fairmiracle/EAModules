@@ -1,15 +1,6 @@
 %% Examples
 %   genetic algorithm for active modules identification in molecular interaction networks
 %
-%% INPUT
-%   G: n*n adjacency matrix of the network
-%   array_basic_z: n*1 vecor, z-score of the nodes
-%   randomscore: n*2 matrix, the i-th row are the mean and sd of random
-%   subnetwork of size i
-%
-%% OUTPUT
-%   Module membership
-%
 %% LICENSE
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by
@@ -55,7 +46,7 @@ for i = 1:10
 
 fid = fopen('result.txt', 'a+');
 fprintf(fid, '%f \n', corrected_subnet_score_MA);
-fprintf(fid, '%s \n\n', num2str(fsubset_MA));
+fprintf(fid, '%s \n\n', num2str(fsubset_MA'));
 fclose(fid);
 
 disp(GeneNames(fsubset_MA));
