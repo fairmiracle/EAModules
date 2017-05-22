@@ -2,7 +2,8 @@
 %   calculated the highest-scoring connected component with given nodes
 %   set, in a multilayer network. The current strategy is to find the 
 %   highest-scoring connected component of each layer, and find the maximal
-%   consensus one as the final result
+%   consensus one as the final result. The function is expired since the
+%   consensus graph can be constructed at first place.
 %
 %% INPUT
 %   TG: a k*n*n tensor, each slice is a n*n adjacency matrix G
@@ -68,8 +69,8 @@ G(G>consensusratio)=1;
     
     for i = 1:length(labels)
         nodeList = nodeset(Lnew==labels(i));
-        k=length(nodeList);
-        compscore = sum(array_basic_z(nodeList))/sqrt(k);
+        modsize=length(nodeList);
+        compscore = sum(array_basic_z(nodeList))/sqrt(modsize);
         %aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
         %compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
         if compscore > s

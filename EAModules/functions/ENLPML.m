@@ -1,5 +1,15 @@
 %% Examples
-%   genetic algorithm for active modules identification in molecular interaction networks
+%   Elastic net constrained linear programming for active modules identification in molecular interaction networks
+%
+%% INPUT
+%   TG: a k*n*n tensor, each slice is a n*n adjacency matrix G
+%   nodesocre_z: k*n matrix, each column is a vecor, z-score of the nodes
+%   randomscore: n*2 matrix, the i-th row are the mean and sd of random
+%   minmodulesize: minimal module size
+%   maxmodulesize: maximal module size
+%   iteration: maximal iteration for searching proper a
+%% OUTPUT
+%   Module membership
 %
 %% LICENSE
 %   This program is free software: you can redistribute it and/or modify
@@ -28,21 +38,40 @@
 %  [3] Active module identification in multi-layer intracellular networks using constrained linear programming. Dong Li et al, in prearing
 %  [4] Michael Grant and Stephen Boyd. CVX: Matlab software for disciplined convex programming, version 2.0 beta. http://cvxr.com/cvx, September 2013.
 
-clear all
-addpath('../EAModules/utils/')
-addpath('../EAModules/functions/')
-addpath('../data/')
-load('galdata.mat')
-minmodulesize = 10;
-maxmodulesize = 100;
-for i = 1:10
-[corrected_subnet_scorelp, fsubsetlp] = ENLP(G, array_basic_z,randomscore, minmodulesize, maxmodulesize,20);
-fid = fopen('result.txt', 'a+');
-fprintf(fid, '%f \n', corrected_subnet_scorelp);
-fprintf(fid, '%s \n\n', num2str(fsubsetlp'));
-fclose(fid);
+function [corrected_subnet_scorelp, fsubsetlp] = ENLPML(TG, nodesocre_z, minmodulesize, maxmodulesize,iteration)
+abegin = 0;
+aend = 1;
 
-G(fsubsetlp,:)=[];
-G(:,fsubsetlp)=[];
-array_basic_z(fsubsetlp)=[];
+k = size(TG,1);
+G = TG(1,:,:);
+z = nodesocre_z(1,:);
+    
+for layer=2:k
+    G = G+TG(layer,:,:);
+    z = z+nodesocre_z(layer,:);
+end
+
+consensusratio = round(k*0.5);
+G(G<consensusratio)=0;
+G(G>consensusratio)=1;
+
+for iter=1:iteration
+    a=(abegin+aend)/2
+    cvx_begin
+        variable x(n)
+        maximize( z*x )
+        subject to
+        a*norm( x, 1 )+(1-a)*norm( x, 2 ) <= 1;
+        x >= 0;
+    cvx_end
+    index_subnetlp=find(x > 1e-6);
+    [corrected_subnet_scorelp, fsubsetlp] = topscore(G,z,randomscore,index_subnetlp);
+    %length(fsubsetlp)
+    if length(fsubsetlp) > maxmodulesize
+        abegin = (abegin+aend)/2;
+    elseif length(fsubsetlp) < minmodulesize
+        aend = (abegin+aend)/2;
+    else
+        break;
+    end
 end
