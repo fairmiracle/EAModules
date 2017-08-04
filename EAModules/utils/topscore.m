@@ -45,14 +45,24 @@ s = -inf;
 [Lnew, Cnew] = graph_conn_comp(G(nodeset,nodeset));
 labels = unique(Lnew);
 
+% for i = 1:length(labels)
+%     nodeList = nodeset(find(Lnew==labels(i)));
+%     k=length(nodeList);
+%     compscore = sum(array_basic_z(nodeList))/sqrt(k);
+%     %aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
+%     %compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
+%     if compscore > s
+%         s = compscore;
+%         subset = nodeList;
+%     end
+%     
+% end
+
 for i = 1:length(labels)
     nodeList = nodeset(find(Lnew==labels(i)));
     k=length(nodeList);
-    compscore = sum(array_basic_z(nodeList))/sqrt(k);
-    %aggregate_score = sum(array_basic_z(nodeList))/sqrt(k);
-    %compscore = (aggregate_score - randomscore(k,1))/randomscore(k,2);
-    if compscore > s
-        s = compscore;
+    if k > s
+        s = k;
         subset = nodeList;
     end
     
